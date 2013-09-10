@@ -1,0 +1,75 @@
+
+#nonsense_root {
+  position: fixed;
+  display: none;
+  font-size: 18px;
+  background: #45494d;
+  color: #e5f4ff;
+  opacity: 0.8;
+  width: 100%;
+  padding:0.5em;
+  margin:0;
+  bottom:0;
+  left:0;
+  right:0;
+  transition: background-color 1s, bottom 0.3s;
+  text-align: center;
+  font-family: "Helvetica", "Arial", "Arial New", "Sans serif";
+  line-height:2em;
+  z-index: 1000;
+}
+
+@media (max-width: 600px) {
+  #nonsense_root {
+    font-size:14px !important;
+  }
+}
+
+
+#nonsense_root button.nonsense-btn {
+  cursor: pointer;
+  font-size:1.05em;
+}
+
+#nonsense_root .show-more-info {
+  padding:
+}
+
+#nonsense_root button {
+  padding: 0.5em 1em;
+  border-radius: 0.2em;
+  border:0;
+}
+
+#nonsense_root a {
+  color: #0096ff;
+}
+
+#nonsense_more_info {
+  display: none;
+}
+
+#nonsense_root .nonsense-yes { 
+  color: #141a00;
+  border-color: #8cb20a;
+  background: #b2e30d;
+  background: -webkit-linear-gradient(top, #b2e30d, #96bf0b)
+}
+
+#nonsense_root .nonsense-yes:hover { 
+  background: #c5ff00;
+  background: -webkit-linear-gradient(top,#c5ff00, #b2e30d)
+}
+
+#nonsense_root .nonsense-no { 
+  color: #ffccd2;
+  border-color: #b20011;
+  background: #fb0018; 
+  background: -webkit-linear-gradient(top, #fb0018, #bf0012)
+}
+
+#nonsense_root .nonsense-no:hover { 
+  background: #ff3347;
+  background: -webkit-linear-gradient(top,#ff3347, #fb0018)
+}
+

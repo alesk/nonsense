@@ -1,0 +1,14 @@
+{
+  "name": "nonsense",
+  "version": "1.0.0",
+  "main": [
+    "js/nonsense.js",
+    "js/nonsense.min.js",
+    "css/nonsense.css"
+  ],
+
+  "ignore": [
+    "index.html", 
+    "minify.sh"
+  ]
+}
