@@ -21,7 +21,3 @@ Inside body create tag with id `nonsense_root`:
       </div>
     </div>
   
-## Minimizing google closure compiler
-
-    bower install
-    java -jar ~/prj/draagle/draagle-client/components/closure-compiler/compiler.jar --compilation_level=ADVANCED_OPTIMIZATIONS js/nonsense.js > nonsense-min.js
