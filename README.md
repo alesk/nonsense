@@ -20,4 +20,23 @@ Inside body create tag with id `nonsense_root`:
            No way!</button>
       </div>
     </div>
-  
+ 
+## Minification
+
+The source code is annotated with additional type information to help google closure compiler with
+optimization.
+
+To install google closure compiler, use `bower install`:
+
+    bower install
+
+And finally minify with google closure compiler:
+
+    java -jar /bower_components/closure-compiler/compiler.jar \
+           --output_wrapper "(function() {%output%})();" \
+           --compilation_level=ADVANCED_OPTIMIZATIONS \
+           --use_types_for_optimization js/nonsense.js \
+           --js_output_file js/nonsense.min.js
+
+To spare typing, there is a helper script named `minify.sh` which executes
+all the necessary minification steps.

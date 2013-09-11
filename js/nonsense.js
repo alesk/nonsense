@@ -28,79 +28,42 @@ var settings_ = {},
       annoyer_interval_id: null
     }
 
+/************ helper functions ***************/
 /**
  * Get elements attribute with default value.
- * @param Element el
- * @param String attr_name
- * @param Number|String|Boolean opt_default
+ * @param {Element} el
+ * @param {string} attr_name
+ * @param {number|string|boolean} opt_default
  */
 
-var getAttr = function(el, attr_name, opt_default) {
+var getAttribute = function(el, attr_name, opt_default) {
   var val = el.getAttribute(attr_name);
   return val != null && val || opt_default;
 }
 
 /**
+ * @param {string} id
+ */
+var getElementById = function(id) {return document.getElementById(id);}
+
+/**
  * Get settings from element.
- * @param Element el
+ * @param {Element} el
  */
 var getSettings = function(el) {
   var key, settings = {};
   for (key in DEFAULTS) {
     if (DEFAULTS.hasOwnProperty(key)) {
-      settings[key] = getAttr(el, 'data-'+key.replace(/_/g, '-'), DEFAULTS[key]);
+      settings[key] = getAttribute(el, 'data-'+key.replace(/_/g, '-'), DEFAULTS[key]);
     }
   }
   return settings;
 }
 
 /**
- * Makes element jumping.
- * @param Element el
- * @param Object state
- */
-var jumper = function(el, s) {
-
-  clearInterval(s.interval_id);
-  function recalc(s) {
-
-
-    // touching the ground
-    if (s.y < 0) {
-      s.y = 0;
-      s.v = -s.v * s.ro;
-    } else {
-      s.v = s.v - s.g * s.dt;
-      s.y = s.y + s.v * s.dt;
-    }
-
-    ypos = (s.yg - s.y) * s.yscale;
-    if (Math.abs(ypos) < 0.1) s.stillness ++;
-    el.style.top = ((ypos < 0) && ypos || 0) + "px";
-    if (s.stillness > 100) {clearInterval(s.interval_id) }
-  }
-
-  s.interval_id = setInterval(function() {recalc(s)}, s.dt);
-  return s.interval_id;
-}
-
-
-/**
- * @param Element el
- */
-var launchJumper = function(el) {
-  el.style.top = 0;
-  var k,s = {};
-  for(k in JUMPER) {s[k] = JUMPER[k]};
-  s.yscale = window.innerHeight / 70;
-  jumper(el, s);
-}
-
-
-/**
  * Sets Element's style attribute
- * @param Element el
- * @param Object styles
+ * @param {Element} el
+ * @param {Object} styles
  */
 
 var setStyle = function(el, styles) {
@@ -112,60 +75,8 @@ var setStyle = function(el, styles) {
 }
 
 /**
- * Asks user for permition to set cookies.
- * @param Element el
- */
-var askForPermission = function(el) {
-  setStyle(el, state_.root_style);
-  el.onclick = onClick;
-
-  if (settings_.annoyer_enabled == 'yes') {
-  setInterval(function(){
-    launchJumper(el.children[0])}, settings_.annoyer_delay)
-  }
-}
-
-/**
- * Randomly moves element up and down to distract user.
- * @param Element el
- */
-var annoyer = function(el) {
-  if (state_.annoyer_on) {
-    var bottom = Math.round(Math.random()*settings_.annoyer_area, 0);
-    state_.root_style['bottom'] = bottom+"px";
-    setStyle(el, state_.root_style);
-  }
-}
-
-/**
- * Click handler
- * @param Event event
- */
-var onClick = function(event) {
-  var target = event.target,
-      action = target.getAttribute('data-action');
-
-  if (action == 'agree') {
-    setCookie(settings_.cookie_name, 'agreed', settings_.cookie_duration);
-    switchOff();
-    onPreviousAgree();
-  } else if (action == 'disagree') {
-    setCookie(settings_.cookie_name, 'disagreed', settings_.cookie_duration);
-    switchOff();
-  } else if (action == 'show-more-info' && state_.more_info_el) {
-    state_.more_info_el.setAttribute('style', 'display:block');
-  }
-
-}
-
-var switchOff = function() {
-    setStyle(state_.root_el, 'none');
-    state_.annyoer_interval_id && clearInterval(state_.annyoer_interval_id);
-}
-
-/**
  * Retrieves cookie value.
- * @param String c_name
+ * @param {string} c_name
  */
 var getCookie = function(c_name) {
   var c_value = document.cookie;
@@ -187,11 +98,12 @@ var getCookie = function(c_name) {
   return c_value;
 }
 
+
 /**
  * Sets browser cookie
- * @param String c_name
- * @param String value
- * @param Number opt_exdays
+ * @param {string} c_name
+ * @param {string} value
+ * @param {number} opt_exdays
  */
 var setCookie = function(c_name, value, opt_exdays) {
   var exdate=new Date(), c_value;
@@ -200,16 +112,110 @@ var setCookie = function(c_name, value, opt_exdays) {
   document.cookie=c_name + "=" + c_value;
 }
 
+/***************** jumper ******************/
+
+/**
+ * Makes element jumping.
+ * @param {Element} el
+ * @param {Object} state
+ */
+var jumper = function(el, state) {
+
+  clearInterval(state.interval_id);
+  function recalc(state) {
+
+
+    // touching the ground
+    if (state.y < 0) {
+      state.y = 0;
+      state.v = -state.v * state.ro;
+    } else {
+      state.v = state.v - state.g * state.dt;
+      state.y = state.y + state.v * state.dt;
+    }
+
+    var ypos = (state.yg - state.y) * state.yscale;
+    if (Math.abs(ypos) < 0.1) state.stillness ++;
+    el.style.top = ((ypos < 0) && ypos || 0) + "px";
+    if (state.stillness > 100) {clearInterval(state.interval_id) }
+  }
+
+  state.interval_id = setInterval(function() {recalc(state)}, state.dt);
+  return state.interval_id;
+}
+
+
+/**
+ * @param {Element} el
+ */
+var launchJumper = function(el) {
+  el.style.top = 0;
+  var k,s = {};
+  for(k in JUMPER) {s[k] = JUMPER[k]};
+  s.yscale = window.innerHeight / 70;
+  jumper(el, s);
+}
+
+
+
+/**
+ * Asks user for permition to set cookies.
+ * @param {Element} el
+ */
+var askForPermission = function(el) {
+  setStyle(el, state_.root_style);
+  el.onclick = onClick;
+
+  if (settings_.annoyer_enabled == 'yes') {
+  setInterval(function(){
+    launchJumper(el.children[0])}, settings_.annoyer_delay)
+  }
+}
+
+
+/**
+ * Click handler
+ * @param {Event} event
+ */
+var onClick = function(event) {
+  var action = getAttribute(event.target, 'data-action');
+
+  if (action == 'agree') {
+    setCookie(settings_.cookie_name, 'agreed', settings_.cookie_duration);
+    switchOff();
+    onPreviousAgree();
+  } else if (action == 'disagree') {
+    setCookie(settings_.cookie_name, 'disagreed', settings_.cookie_duration);
+    switchOff();
+  } else if (action == 'show-more-info' && state_.more_info_el) {
+    state_.more_info_el.setAttribute('style', 'display:block');
+  }
+
+}
+
+var switchOff = function() {
+    setStyle(state_.root_el, 'none');
+    state_.annyoer_interval_id && clearInterval(state_.annyoer_interval_id);
+}
+
+
+var onPreviousAgree = function() {
+  if (settings_.on_previous_agree in window) {
+    window[settings_.on_previous_agree]();
+  }
+}
+
+
 var main = function() {
-  state_.root_el = document.getElementById('nonsense_root');
-  state_.more_info_el = document.getElementById('nonsense_more_info');
+  state_.root_el = getElementById('nonsense_root');
+  state_.more_info_el = getElementById('nonsense_more_info');
   settings_ = getSettings(state_.root_el);
   state_.cookie = getCookie(settings_.cookie_name);
 
   if (state_.cookie == null) {
     askForPermission(state_.root_el);
-  } else if (state_.cookie == 'agreed' && settings_.on_previous_agree in window) {
-    window[settings_.on_previous_agree]();
+  } else if (state_.cookie == 'agreed') {
+    onPreviousAgree();
   }
 
 }
