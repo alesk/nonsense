@@ -11,7 +11,8 @@ Put reference to script nonsense.js to head of your site:
 
 Inside body create tag with id `nonsense_root`:
 
-    <div id="nonsense_root">
+    <div id="nonsense_root"
+         data-annoyer-enabled="yes">
        <div>
          This site wants to use cookies to improve user experience. Do you agree?     
          <button data-action='agree' class="nonsense-btn nonsense-yes">
@@ -20,7 +21,23 @@ Inside body create tag with id `nonsense_root`:
            No way!</button>
       </div>
     </div>
- 
+
+## Parameters
+
+Optional parameters are passed via `data-` html5 attributes on `nonsense_root` element.
+
+Recognised optional parameters are:
+
+| Parameter | Default | Comment|
+|---------- | ------- |--------|
+| `data-cookie-name` | "nonsense" | Name of cookie to set. Cookie  will get value `agreed` or `disagree` according to users action.|
+| `data-cookie-duration` | 356 * 30 | Validity period of cookie. Default is 30 years |
+| `data-annoyer-enabled` | "yes" | If `yes`, annoyer will be launched every `data-annoyer-delay` miliseconds. |
+| `data-annoyer-delay` | 15000 | Time among annoyer bursts in miliseconds. Default is every 15s |
+| `data-on-previous-agree`| null | Global function that will be called if user agreed on terms. Typically one puts tracking initialisation code here. |
+
+
+
 ## Minification
 
 The source code is annotated with additional type information to help google closure compiler with

@@ -2,8 +2,6 @@ var DEFAULTS = {
   cookie_name: 'nonsense',
   cookie_duration: 356*30,
   annoyer_enabled: "yes",
-  annoyer_area: 30,
-  annoyer_period: 50, //ms
   annoyer_delay: 15000,
 
   on_previous_agree: null
