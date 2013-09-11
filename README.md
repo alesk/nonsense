@@ -1,6 +1,6 @@
 # nonsensejs
 
-`nonsensejs` is little script that helps web sites complain with  eu bureaucratic nonsense about cookie use.
+`nonsensejs` is little script that helps web sites comply with [eu bureaucratic nonsense about web cookies](http://www.theeucookielaw.com/).
 
 ## Usage
 

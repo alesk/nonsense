@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link href="css/nonsense.css" rel="stylesheet"/>
+</script>
+</head>
+<body style="margin:0">
+<h1>Example of nonsense.js integration</h1>
+<p>When there exists cookie nonsense, nonsense_root is not displayed</p>
+<div id="nonsense_root"
+     data-on-previous-agree="thankyou"
+     data-annoyer-enabled="yes">
+  <div>
+  <div>
+  This site wants to use cookies to improve user experience. Do you agree?
+  <button data-action='agree' class="nonsense-btn nonsense-yes">OK, no prob</button>
+  <button data-action='disagree'class="nonsense-btn nonsense-no">No way!</button>
+  <a data-action='show-more-info' class="show-more-info" href="#">Več informacij</a>
+  </div>
+  <div id="nonsense_more_info">
+    <p>Cookies named '__utm*' are created by Google Analytics.</p>
+  </div>
+    </div>
+  <script>
+//<![CDATA[
+function thankyou() {
+  var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-21068634-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+       })();
+}
+//]]>
+  </script>
+</div>
+  <script type="text/javascript" src="js/nonsense.js"></script>
+</body>
+</html>
