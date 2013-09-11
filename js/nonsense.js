@@ -3,6 +3,7 @@ var DEFAULTS = {
   cookie_duration: 356*30,
   annoyer_enabled: "yes",
   annoyer_delay: 15000,
+  z_index: 100,
 
   on_previous_agree: null
 };
@@ -21,7 +22,6 @@ var JUMPER = {
 
 var settings_ = {},
     state_ = {
-      root_style: {display: 'block', bottom: 0},
       annoyer_on: false,
       annoyer_interval_id: null
     }
@@ -63,14 +63,6 @@ var getSettings = function(el) {
  * @param {Element} el
  * @param {Object} styles
  */
-
-var setStyle = function(el, styles) {
-  var style = [];
-  for (var key in styles) {
-    style.push(key+":"+styles[key]);
-  }
-  el.setAttribute('style', style.join(";"))
-}
 
 /**
  * Retrieves cookie value.
@@ -161,7 +153,6 @@ var launchJumper = function(el) {
  * @param {Element} el
  */
 var askForPermission = function(el) {
-  setStyle(el, state_.root_style);
   el.onclick = onClick;
 
   if (settings_.annoyer_enabled == 'yes') {
@@ -192,7 +183,7 @@ var onClick = function(event) {
 }
 
 var switchOff = function() {
-    setStyle(state_.root_el, 'none');
+    state_.root_el.style.display = 'none';
     state_.annyoer_interval_id && clearInterval(state_.annyoer_interval_id);
 }
 
@@ -210,12 +201,19 @@ var main = function() {
   settings_ = getSettings(state_.root_el);
   state_.cookie = getCookie(settings_.cookie_name);
 
-  if (state_.cookie == null) {
-    askForPermission(state_.root_el);
-  } else if (state_.cookie == 'agreed') {
-    onPreviousAgree();
-  }
 
+  if (state_.cookie == null) {
+    state_.root_el.style.zIndex = settings_.z_index;
+    state_.root_el.style.display = "block";
+    state_.root_el.style.bottom = "0px";
+    askForPermission(state_.root_el);
+  } else {
+    if (state_.cookie == 'agreed') {
+    onPreviousAgree();
+    }
+    switchOff();
+  }
 }
 
+debugger;
 main();

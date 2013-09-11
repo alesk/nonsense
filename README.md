@@ -35,6 +35,8 @@ Recognised optional parameters are:
 | `data-annoyer-enabled` | "yes" | If `yes`, annoyer will be launched every `data-annoyer-delay` miliseconds. |
 | `data-annoyer-delay` | 15000 | Time among annoyer bursts in miliseconds. Default is every 15s |
 | `data-on-previous-agree`| null | Global function that will be called if user agreed on terms. Typically one puts tracking initialisation code here. |
+| `data-z-index`| 100 | z-index of nonsense_root element. Set higher if
+necessary. |
 
 
 
