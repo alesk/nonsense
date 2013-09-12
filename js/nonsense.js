@@ -215,5 +215,4 @@ var main = function() {
   }
 }
 
-debugger;
 main();
