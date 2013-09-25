@@ -24,7 +24,7 @@ var settings_ = {},
     state_ = {
       annoyer_on: false,
       annoyer_interval_id: null
-    }
+    };
 
 /************ helper functions ***************/
 /**
@@ -36,13 +36,13 @@ var settings_ = {},
 
 var getAttribute = function(el, attr_name, opt_default) {
   var val = el.getAttribute(attr_name);
-  return val != null && val || opt_default;
-}
+  return val !== null && val || opt_default;
+};
 
 /**
  * @param {string} id
  */
-var getElementById = function(id) {return document.getElementById(id);}
+var getElementById = function(id) {return document.getElementById(id);};
 
 /**
  * Get settings from element.
@@ -56,7 +56,7 @@ var getSettings = function(el) {
     }
   }
   return settings;
-}
+};
 
 /**
  * Sets Element's style attribute
@@ -86,7 +86,7 @@ var getCookie = function(c_name) {
     c_value = unescape(c_value.substring(c_start,c_end));
   }
   return c_value;
-}
+};
 
 
 /**
@@ -98,9 +98,9 @@ var getCookie = function(c_name) {
 var setCookie = function(c_name, value, opt_exdays) {
   var exdate=new Date(), c_value;
   exdate.setDate(exdate.getDate() + opt_exdays);
-  c_value=escape(value) + ((opt_exdays==null) ? "" : "; expires="+exdate.toUTCString());
+  c_value=escape(value) + ((opt_exdays === null) ? "" : "; expires="+exdate.toUTCString());
   document.cookie=c_name + "=" + c_value;
-}
+};
 
 /***************** jumper ******************/
 
@@ -127,12 +127,12 @@ var jumper = function(el, state) {
     var ypos = (state.yg - state.y) * state.yscale;
     if (Math.abs(ypos) < 0.1) state.stillness ++;
     el.style.top = ((ypos < 0) && ypos || 0) + "px";
-    if (state.stillness > 100) {clearInterval(state.interval_id) }
+    if (state.stillness > 100) {clearInterval(state.interval_id); }
   }
 
-  state.interval_id = setInterval(function() {recalc(state)}, state.dt);
+  state.interval_id = setInterval(function() {recalc(state);}, state.dt);
   return state.interval_id;
-}
+};
 
 
 /**
@@ -141,10 +141,10 @@ var jumper = function(el, state) {
 var launchJumper = function(el) {
   el.style.top = 0;
   var k,s = {};
-  for(k in JUMPER) {s[k] = JUMPER[k]};
+  for(k in JUMPER) {s[k] = JUMPER[k];}
   s.yscale = window.innerHeight / 70;
   jumper(el, s);
-}
+};
 
 
 
@@ -157,9 +157,9 @@ var askForPermission = function(el) {
 
   if (settings_.annoyer_enabled == 'yes') {
   setInterval(function(){
-    launchJumper(el.children[0])}, settings_.annoyer_delay)
+    launchJumper(el.children[0]);}, settings_.annoyer_delay);
   }
-}
+};
 
 
 /**
@@ -180,19 +180,19 @@ var onClick = function(event) {
     state_.more_info_el.setAttribute('style', 'display:block');
   }
 
-}
+};
 
 var switchOff = function() {
     state_.root_el.style.display = 'none';
-    state_.annyoer_interval_id && clearInterval(state_.annyoer_interval_id);
-}
+    if (state_.annyoer_interval_id) clearInterval(state_.annyoer_interval_id);
+};
 
 
 var onPreviousAgree = function() {
   if (settings_.on_previous_agree in window) {
     window[settings_.on_previous_agree]();
   }
-}
+};
 
 
 var main = function() {
@@ -202,7 +202,7 @@ var main = function() {
   state_.cookie = getCookie(settings_.cookie_name);
 
 
-  if (state_.cookie == null) {
+  if (state_.cookie === null) {
     state_.root_el.style.zIndex = settings_.z_index;
     state_.root_el.style.display = "block";
     state_.root_el.style.bottom = "0px";
@@ -213,7 +213,6 @@ var main = function() {
     }
     switchOff();
   }
-}
+};
 
-debugger;
 main();
